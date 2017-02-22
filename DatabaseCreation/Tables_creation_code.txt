@@ -1,0 +1,176 @@
+/* DROP TABLE ENOIKIASH;
+  DROP TABLE PLHRWMH; 
+  DROP TABLE ODHGOS;
+  DROP TABLE APLOS;
+  DROP TABLE ETAIRIKOS;
+  DROP TABLE PELATHS;
+  DROP TABLE GEWGRAFIKODIAMERISMA;
+  DROP TABLE AYTOKINHTO;
+  DROP TABLE KATHGORIA;
+  DROP TABLE THLTOPOTHESIAS;
+  DROP TABLE TOPOTHESIA; */
+ 
+
+
+CREATE TABLE KATHGORIA
+                   (kwdikos_kat CHAR(10),
+                    onomasia CHAR(20),
+                    perigrafh CHAR(60),
+                    PRIMARY KEY (kwdikos_kat));
+
+
+CREATE TABLE AYTOKINHTO
+                   (arithmos_plaisiou CHAR(10),
+				    xrwma CHAR(20),
+					montelo CHAR(20),
+					etairia_kataskeuhs CHAR(20),
+					hmeromhnia_agoras DATETIME,
+                    kwdikos_kat CHAR(10) not null,
+                    PRIMARY KEY (arithmos_plaisiou),
+                    FOREIGN KEY (kwdikos_kat) REFERENCES KATHGORIA);
+
+CREATE TABLE TOPOTHESIA
+               (kwdikos_top CHAR(10),
+                odos CHAR(20),
+                arithmos CHAR(5),
+                polh CHAR(20),
+                TK INTEGER,
+                onomatepwnumo_ypeuthinou CHAR(30),
+                PRIMARY KEY (kwdikos_top));
+
+CREATE TABLE THLTOPOTHESIAS
+                   (kwdikos_top CHAR(10) not null,
+                    thl CHAR(10),
+                    FOREIGN KEY (kwdikos_top) REFERENCES TOPOTHESIA);
+                   
+
+CREATE TABLE GEWGRAFIKODIAMERISMA
+                        (kwdikos_diam CHAR(10),
+                         onomasia CHAR(20),
+                         plithismos INTEGER,
+                         meso_ethsio_eis REAL,
+                         PRIMARY KEY (kwdikos_diam));
+
+
+CREATE TABLE PELATHS
+            (kwdikos_pel CHAR(10),
+             onomatepwnumo CHAR(30),
+             dieuthinsi CHAR(20),
+             thlephwno CHAR(10),
+             kwdikos_diam CHAR(10) not null,
+             PRIMARY KEY (kwdikos_pel),
+             FOREIGN KEY (kwdikos_diam) REFERENCES GEWGRAFIKODIAMERISMA);
+
+CREATE TABLE APLOS 
+                (kwdikos_pel CHAR(10) not null,
+                 hmeromhnia_gen DATETIME,
+                 PRIMARY KEY (kwdikos_pel),
+                 FOREIGN KEY (kwdikos_pel) REFERENCES PELATHS);
+				           
+CREATE TABLE ETAIRIKOS
+                    (kwdikos_pel CHAR(10) not null,
+                     pososto_ekpt REAL,
+                     AFM CHAR(10),
+                     PRIMARY KEY (kwdikos_pel),
+                     FOREIGN KEY (kwdikos_pel) REFERENCES PELATHS);
+
+CREATE TABLE ODHGOS
+                 (kwdikos_pel CHAR(10) not null,
+                  onomatepwnumo_od CHAR(30),
+                  hlikia INTEGER,
+                  FOREIGN KEY (kwdikos_pel) REFERENCES APLOS);
+
+CREATE TABLE PLHRWMH
+                  (arithmos_epivevaiwshs CHAR(15),
+                   poso_plhrwmhs REAL,
+                   hmeromhnia_plhrwmhs DATETIME,
+                   arithmos_pistwtikhs_kartas CHAR(20),
+                   hmeromhnia_lhkshs_pist_kar DATETIME,
+                   PRIMARY KEY (arithmos_epivevaiwshs));
+
+
+CREATE TABLE ENOIKIASH 
+              (kwdikos_en CHAR(10),
+               aksia REAL,
+               hmeromhnia1 DATETIME,
+               hmeromhnia2 DATETIME,
+               arithmos_plaisiou CHAR(10) not null,
+               kwdikos_top_paralavhs CHAR(10) not null,
+               kwdikos_top_epistrofhs CHAR(10) not null,
+               kwdikos_pel CHAR(10) not null,
+               arithmos_epivevaiwshs CHAR(15) unique not null,
+               PRIMARY KEY (kwdikos_en),
+               FOREIGN KEY (arithmos_plaisiou) REFERENCES AYTOKINHTO,
+               FOREIGN KEY (kwdikos_top_paralavhs) REFERENCES TOPOTHESIA,
+               FOREIGN KEY (kwdikos_top_epistrofhs) REFERENCES TOPOTHESIA,
+               FOREIGN KEY (kwdikos_pel) REFERENCES PELATHS,
+               FOREIGN KEY (arithmos_epivevaiwshs) REFERENCES PLHRWMH);
+
+
+
+/*Insert Data */
+Insert into KATHGORIA (kwdikos_kat, onomasia, perigrafh) Values ('101','ΠΟΛΥΤΕΛΕΣ','Μεγάλο αυτοκίνητο ειδικό για πολυμελής οικογένειες');
+Insert into KATHGORIA (kwdikos_kat, onomasia, perigrafh) Values ('102','ΜΕΤΡΙΟΥ ΜΕΓΕΘΟΥΣ', 'Αυτοκίνητο 5πορτο, ικανό για άνετη οδήγηση');
+Insert into KATHGORIA (kwdikos_kat, onomasia, perigrafh) Values ('103','ΜΙΚΡΟ', 'Αυτοκίνητο 2θέσιο, κατάλληλο για γρήγορη οδήγηση');
+
+Insert into AYTOKINHTO (arithmos_plaisiou, xrwma, montelo, etairia_kataskeuhs, hmeromhnia_agoras, kwdikos_kat) Values ('0001', 'πράσινο', 'TIGUAN', 'VW', 12/20/05, '101');
+Insert into AYTOKINHTO (arithmos_plaisiou, xrwma, montelo, etairia_kataskeuhs, hmeromhnia_agoras, kwdikos_kat) Values ('0002', 'μαύρο', 'C4', 'PEUGEOT', 5/15/09, '102');
+Insert into AYTOKINHTO (arithmos_plaisiou, xrwma, montelo, etairia_kataskeuhs, hmeromhnia_agoras, kwdikos_kat) Values ('0003', 'κόκκινο', 'forfour', 'SMART', 4/13/08, '103');
+Insert into AYTOKINHTO (arithmos_plaisiou, xrwma, montelo, etairia_kataskeuhs, hmeromhnia_agoras, kwdikos_kat) Values ('0004', 'γκρι', 'RAV', 'TOYOTA', 1/7/07, '101');
+Insert into AYTOKINHTO (arithmos_plaisiou, xrwma, montelo, etairia_kataskeuhs, hmeromhnia_agoras, kwdikos_kat) Values ('0005', 'λευκό', 'POLO', 'VW', 9/23/08, '102');
+
+Insert into TOPOTHESIA (kwdikos_top, odos, arithmos, polh, TK, onomatepwnumo_ypeuthinou) Values ('1111', 'αγαμέμνωνος', '25', 'Αθήνα', 16674, 'Γιώργος Παπαδόπουλος');
+Insert into TOPOTHESIA (kwdikos_top, odos, arithmos, polh, TK, onomatepwnumo_ypeuthinou) Values ('1112', 'αμαλίας', '33', 'Σπάρτη', 15567, 'Δημήτρης Πρίφτης');
+Insert into TOPOTHESIA (kwdikos_top, odos, arithmos, polh, TK, onomatepwnumo_ypeuthinou) Values ('1113', 'πλάτωνος', '44', 'Χανιά', 12223, 'Ιωάννης Τζημάκης');
+Insert into TOPOTHESIA (kwdikos_top, odos, arithmos, polh, TK, onomatepwnumo_ypeuthinou) Values ('1114', 'σωκράτους', '101', 'Τρίκαλα', 33323, 'Δημήτρης Λάππας');
+Insert into TOPOTHESIA (kwdikos_top, odos, arithmos, polh, TK, onomatepwnumo_ypeuthinou) Values ('1115', 'προόδου', '12', 'Θεσσαλονίκη', 23445, 'Μιχάλης Αγγέλου');
+
+Insert into THLTOPOTHESIAS (kwdikos_top, thl) Values ('1111', '2109659556');
+Insert into THLTOPOTHESIAS (kwdikos_top, thl) Values ('1114', '2280556787');
+Insert into THLTOPOTHESIAS (kwdikos_top, thl) Values ('1113', '2230678876');
+Insert into THLTOPOTHESIAS (kwdikos_top, thl) Values ('1114', '2504345666');
+Insert into THLTOPOTHESIAS (kwdikos_top, thl) Values ('1111', '2106445555');
+
+Insert into GEWGRAFIKODIAMERISMA (kwdikos_diam, onomasia, plithismos, meso_ethsio_eis) Values ('10015', 'Πελοπόννησος', 955450, 8453.55);
+Insert into GEWGRAFIKODIAMERISMA (kwdikos_diam, onomasia, plithismos, meso_ethsio_eis) Values ('10025', 'Μακεδονία', 2300110, 10000);
+Insert into GEWGRAFIKODIAMERISMA (kwdikos_diam, onomasia, plithismos, meso_ethsio_eis) Values ('10035', 'Στερεά Ελλάδα', 5200305, 11500);
+Insert into GEWGRAFIKODIAMERISMA (kwdikos_diam, onomasia, plithismos, meso_ethsio_eis) Values ('10045', 'Ήπειρος', 900534, 10673);
+Insert into GEWGRAFIKODIAMERISMA (kwdikos_diam, onomasia, plithismos, meso_ethsio_eis) Values ('10055', 'Κυκλάδες', 455673, 9556);
+
+Insert into PELATHS (kwdikos_pel, onomatepwnumo, dieuthinsi, thlephwno, kwdikos_diam) Values ('01001', 'Γιώργος Γεωργίου', 'Ερμού 35', '6911223333', '10015');
+Insert into PELATHS (kwdikos_pel, onomatepwnumo, dieuthinsi, thlephwno, kwdikos_diam) Values ('01002', 'Δημήτρης Δημητρίου', 'Άρεως 43', '6987444444', '10035');
+Insert into PELATHS (kwdikos_pel, onomatepwnumo, dieuthinsi, thlephwno, kwdikos_diam) Values ('01003', 'Γεωργία Λημνιάτη', 'Σόλωνος 55', '6934506789', '10025');
+Insert into PELATHS (kwdikos_pel, onomatepwnumo, dieuthinsi, thlephwno, kwdikos_diam) Values ('01004', 'Δήμητρα Καρέλη', 'Δημούτσου 5', '6933567859', '10055');
+Insert into PELATHS (kwdikos_pel, onomatepwnumo, dieuthinsi, thlephwno, kwdikos_diam) Values ('01005', 'Kωνσταντίνος Λαγός', 'Ντίνα 44', '6980706050', '10025');
+
+Insert into APLOS (kwdikos_pel, hmeromhnia_gen) Values ('01002', 4/5/70);
+Insert into APLOS (kwdikos_pel, hmeromhnia_gen) Values ('01004', 6/12/74);
+Insert into APLOS (kwdikos_pel, hmeromhnia_gen) Values ('01005', 9/24/91);
+
+Insert into ETAIRIKOS (kwdikos_pel, pososto_ekpt, AFM) Values ('01001', 3.144, '164604445');
+Insert into ETAIRIKOS (kwdikos_pel, pososto_ekpt, AFM) Values ('01003', 2.433, '145678861');
+
+Insert into ODHGOS (kwdikos_pel, onomatepwnumo_od, hlikia) Values ('01002', 'Σπύρος Γεωργίου', 36);
+Insert into ODHGOS (kwdikos_pel, onomatepwnumo_od, hlikia) Values ('01004', 'Παναγιώτης Σπυρόπουλος', 44);
+Insert into ODHGOS (kwdikos_pel, onomatepwnumo_od, hlikia) Values ('01002', 'Δήμητρα Γεωργίου', 19);
+Insert into ODHGOS (kwdikos_pel, onomatepwnumo_od, hlikia) Values ('01002', 'Χριστίνα Δημητρίου', 39);
+Insert into ODHGOS (kwdikos_pel, onomatepwnumo_od, hlikia) Values ('01005', 'Χρήστος Λαγός', 20);
+
+Insert into PLHRWMH (arithmos_epivevaiwshs, poso_plhrwmhs, hmeromhnia_plhrwmhs, arithmos_pistwtikhs_kartas, hmeromhnia_lhkshs_pist_kar) Values ('123451', 500, 5/13/10, '56666665', 6/5/20); 
+Insert into PLHRWMH (arithmos_epivevaiwshs, poso_plhrwmhs, hmeromhnia_plhrwmhs, arithmos_pistwtikhs_kartas, hmeromhnia_lhkshs_pist_kar) Values ('123452', 800, 8/15/10, '66654345', 5/7/19);
+Insert into PLHRWMH (arithmos_epivevaiwshs, poso_plhrwmhs, hmeromhnia_plhrwmhs, arithmos_pistwtikhs_kartas, hmeromhnia_lhkshs_pist_kar) Values ('123453', 150, 12/1/10, '33406495', 12/31/18);
+Insert into PLHRWMH (arithmos_epivevaiwshs, poso_plhrwmhs, hmeromhnia_plhrwmhs, arithmos_pistwtikhs_kartas, hmeromhnia_lhkshs_pist_kar) Values ('123454', 300, 6/11/10, '47676768', 3/24/20);
+Insert into PLHRWMH (arithmos_epivevaiwshs, poso_plhrwmhs, hmeromhnia_plhrwmhs, arithmos_pistwtikhs_kartas, hmeromhnia_lhkshs_pist_kar) Values ('123455', 900, 11/13/10, '58765489', 6/30/19);
+
+Insert into ENOIKIASH (kwdikos_en, aksia, hmeromhnia1, hmeromhnia2, arithmos_plaisiou, kwdikos_top_paralavhs, kwdikos_top_epistrofhs, kwdikos_pel, arithmos_epivevaiwshs) Values ('55551', 250, 4/4/10, 6/4/10, '0003', '1111', '1111', '01001', '123454');
+Insert into ENOIKIASH (kwdikos_en, aksia, hmeromhnia1, hmeromhnia2, arithmos_plaisiou, kwdikos_top_paralavhs, kwdikos_top_epistrofhs, kwdikos_pel, arithmos_epivevaiwshs) Values ('55552', 150, 8/25/10, 11/25/10, '0002', '1111', '1114', '01004', '123453');
+Insert into ENOIKIASH (kwdikos_en, aksia, hmeromhnia1, hmeromhnia2, arithmos_plaisiou, kwdikos_top_paralavhs, kwdikos_top_epistrofhs, kwdikos_pel, arithmos_epivevaiwshs) Values ('55553', 850, 7/10/10, 11/10/10, '0004', '1113', '1113', '01001', '123455');
+Insert into ENOIKIASH (kwdikos_en, aksia, hmeromhnia1, hmeromhnia2, arithmos_plaisiou, kwdikos_top_paralavhs, kwdikos_top_epistrofhs, kwdikos_pel, arithmos_epivevaiwshs) Values ('55554', 500, 2/25/10, 5/10/10, '0001', '1114', '1115', '01002', '123451');
+Insert into ENOIKIASH (kwdikos_en, aksia, hmeromhnia1, hmeromhnia2, arithmos_plaisiou, kwdikos_top_paralavhs, kwdikos_top_epistrofhs, kwdikos_pel, arithmos_epivevaiwshs) Values ('55555', 850, 3/21/10, 7/31/10, '0003', '1111', '1111', '01003', '123452');
+
+
+
+
+
+
+
